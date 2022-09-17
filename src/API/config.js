@@ -6,6 +6,7 @@ const API_MOVIE = process.env.REACT_APP_TMDB;
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 // https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key=
+// https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=
 export const tmdb = {
   getMovie: (type) => `${API_MOVIE}/movie/${type}?api_key=${API_KEY}`,
   getDetailMovie: (id) => `${API_MOVIE}/movie/${id}?api_key=${API_KEY}`,
