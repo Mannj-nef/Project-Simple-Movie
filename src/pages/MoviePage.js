@@ -1,7 +1,12 @@
 import React from "react";
+import useSWR from "swr";
+import { fetcher, tmdb } from "../API/config";
 import MovieItem from "../components/Movie/MovieItem";
 
+const typeApi = "popular";
 const MoviePage = () => {
+  const { data, error } = useSWR(tmdb.getMovie(typeApi), fetcher);
+  const movie = data?.results || [];
   return (
     <div className="">
       <form action="" className="flex mt-10">
@@ -27,10 +32,9 @@ const MoviePage = () => {
         </button>
       </form>
       <div className="grid grid-cols-4 gap-5 mt-10">
-        {Array(20)
-          .fill(null)
-          .map((item, index) => (
-            <MovieItem key={index}></MovieItem>
+        {!!movie.length &&
+          movie.map((item) => (
+            <MovieItem key={item.id} item={item}></MovieItem>
           ))}
       </div>
     </div>

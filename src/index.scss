@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply font-fontBody bg-bgColor text-white;
+    @apply font-fontBody bg-bgColor text-white select-none;
   }
 }
 
@@ -16,5 +16,8 @@
     margin-right: auto;
     padding-left: 40px;
     padding-right: 40px;
+  }
+  .wrapp-slider .swiper-slide {
+    width: 250px;
   }
 }

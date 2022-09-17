@@ -1,24 +1,36 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { ROUTERLINK } from "./common/routerLink";
-import Header from "./components/header/Header";
+import "swiper/css";
+import Main from "./pages/Main";
+
+const detail = ROUTERLINK.find((item) => item.name === "Detail page");
 
 function App() {
   return (
     <div className="App">
       <Suspense fallback={<div>Loading...</div>}>
-        <div className="py-10 container bg-[#222126]">
-          <Header></Header>
-          <Routes>
-            {!!ROUTERLINK.length &&
-              ROUTERLINK.map((page) => {
+        <Routes>
+          <Route element={<Main></Main>}>
+            {ROUTERLINK.filter((item) => item.nameLink !== "Detail").map(
+              (page) => {
                 const Component = page.element;
                 return (
-                  <Route path={page.path} element={<Component></Component>} />
+                  <Route
+                    key={page.id}
+                    path={page.path}
+                    element={<Component></Component>}
+                  />
                 );
-              })}
-          </Routes>
-        </div>
+              }
+            )}
+          </Route>
+          <Route
+            path={detail.path}
+            element={<detail.element></detail.element>}
+          ></Route>
+          <Route path="*" element="404"></Route>
+        </Routes>
       </Suspense>
     </div>
   );

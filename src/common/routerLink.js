@@ -2,6 +2,8 @@ import { lazy } from "react";
 
 const HomePage = lazy(() => import("../pages/HomePage"));
 const MoviePage = lazy(() => import("../pages/MoviePage"));
+const Upcoming = lazy(() => import("../pages/Upcoming"));
+const Detail = lazy(() => import("../pages/MovieDetail"));
 
 export const ROUTERLINK = [
   {
@@ -18,10 +20,18 @@ export const ROUTERLINK = [
     path: "/movie",
     element: MoviePage,
   },
-  // {
-  //   id: 3,
-  //   name: "Anime page",
-  //   nameLink: "Anime",
-  //   path: "/anime",
-  // },
+  {
+    id: 3,
+    name: "Upcoming page",
+    nameLink: "Upcoming",
+    path: "/upcoming",
+    element: Upcoming,
+  },
+  {
+    id: 4,
+    name: "Detail page",
+    nameLink: "Detail",
+    path: "/detail/:id",
+    element: Detail,
+  },
 ];
