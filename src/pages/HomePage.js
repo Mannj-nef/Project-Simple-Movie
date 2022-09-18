@@ -37,10 +37,12 @@ function MovieMeta({ type }) {
   const { data, error } = useSWR(tmdb.getMovie(typeApi), fetcher);
   const movie = data?.results || [];
 
+  const loading = !data && !error;
+
   return (
     <div className="mt-10">
       <h2 className="text-3xl font-semibold capitalize">{title}</h2>
-      <MovieList listMovie={movie}></MovieList>
+      <MovieList listMovie={movie} loading={loading}></MovieList>
     </div>
   );
 }

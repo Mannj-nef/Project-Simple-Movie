@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Button = ({ children, className, handler }) => {
+const Button = ({ children, className, handler, primary = false }) => {
   return (
     <button
-      className={`bg-primary px-10 py-3 text-2xl rounded-lg capitalize ${className}`}
+      className={`px-10 py-3 text-2xl rounded-lg capitalize ${className} ${
+        primary ? "bg-primary" : ""
+      }`}
       onClick={handler}
     >
       {children}
@@ -16,6 +18,7 @@ Button.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   handler: PropTypes.func,
+  primary: PropTypes.bool,
 };
 
 export default Button;

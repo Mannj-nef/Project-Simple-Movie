@@ -3,13 +3,14 @@ import { Routes, Route } from "react-router-dom";
 import { ROUTERLINK } from "./common/routerLink";
 import "swiper/css";
 import Main from "./pages/Main";
+import LoadingPage from "./components/loading/LoadingPage";
 
 const detail = ROUTERLINK.find((item) => item.name === "Detail page");
 
 function App() {
   return (
     <div className="App">
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LoadingPage></LoadingPage>}>
         <Routes>
           <Route element={<Main></Main>}>
             {ROUTERLINK.filter((item) => item.nameLink !== "Detail").map(

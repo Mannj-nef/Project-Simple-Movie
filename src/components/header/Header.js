@@ -5,7 +5,7 @@ import { ROUTERLINK } from "../../common/routerLink";
 
 const Header = ({ className }) => {
   return (
-    <ul className={`flex gap-5 ${className}`}>
+    <ul className={`flex gap-5 ${className || ""}`}>
       {ROUTERLINK.filter((item) => item.nameLink !== "Detail").map((item) => (
         <li key={item.id}>
           <NavLink

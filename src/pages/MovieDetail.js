@@ -2,6 +2,7 @@ import React from "react";
 import useSWR from "swr";
 import { useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
+import PropTypes from "prop-types";
 
 import { fetcher, tmdb } from "../API/config";
 import Header from "../components/header/Header";
@@ -53,84 +54,89 @@ const MovieDetail = () => {
         <p className="w-[700px] mx-auto mt-10 leading-9 tracking-wide text-center">
           {overview}
         </p>
-        <MovieMeta></MovieMeta>
-        <MovieVideo></MovieVideo>
-        <Similar></Similar>
+        {/* credits */}
+        <MovieMeta type="credits"></MovieMeta>
+        {/* videos */}
+        <MovieMeta type="videos"></MovieMeta>
+        {/* similar */}
+        <MovieMeta type="similar"></MovieMeta>
       </div>
     </>
   );
 };
 
-function MovieMeta() {
+function MovieMeta({ type }) {
   const { id } = useParams();
-  const { data, error } = useSWR(tmdb.getMeta("credits", id), fetcher);
+  const { data, error } = useSWR(tmdb.getMeta(type, id), fetcher);
 
   if (!data) return null;
-  const casts = data.cast;
 
-  return (
-    <div className="wrapp-slider mt-10">
-      <Swiper grabCursor={true} spaceBetween={40} slidesPerView="auto">
-        {!!casts.length &&
-          casts.map((item) => (
-            <SwiperSlide key={item.id}>
-              <div className="relative rounded-lg">
-                <img
-                  src={tmdb.img500(item.profile_path)}
-                  className="w-full h-full object-cover rounded-lg"
-                  alt={item.name}
-                />
-              </div>
-            </SwiperSlide>
-          ))}
-      </Swiper>
-    </div>
-  );
+  if (type === "credits") {
+    const casts = data.cast;
+    return (
+      <div className="wrapp-slider mt-10">
+        <Swiper grabCursor={true} spaceBetween={40} slidesPerView="auto">
+          {!!casts.length &&
+            casts.map((item) => (
+              <SwiperSlide key={item.id}>
+                <div className="relative rounded-lg">
+                  <div className="ovlay absolute inset-0 bg-gradient-to-t from-black to-transparent rounded-lg bg-opacity-80"></div>
+                  <img
+                    src={tmdb.img500(item.profile_path)}
+                    className="w-full h-full object-cover rounded-lg"
+                    alt={item.name}
+                  />
+                  <p className="absolute bottom-5 text-center w-full text-2xl">
+                    {item.name}
+                  </p>
+                </div>
+              </SwiperSlide>
+            ))}
+        </Swiper>
+      </div>
+    );
+  } else {
+    const results = data.results;
+
+    console.log(type, data);
+    return (
+      <>
+        {type === "videos" ? (
+          <div className="mt-10">
+            <h2 className="capitalize font-bold text-4xl mb-5 text-center">
+              trailer
+            </h2>
+            {!!results.length &&
+              results
+                .slice(0, 1)
+                .map((item) => (
+                  <iframe
+                    width="916"
+                    height="515"
+                    src={`https://www.youtube.com/embed/${item.key}`}
+                    title="HTML & CSS - How to Embed a YouTube Video in Your Website"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="text-center m-auto"
+                  ></iframe>
+                ))}
+          </div>
+        ) : type === "similar" ? (
+          <div className="my-10">
+            <h2 className="capitalize font-bold text-4xl mb-5 text-center">
+              similar
+            </h2>
+            <MovieList listMovie={results}></MovieList>
+          </div>
+        ) : null}
+      </>
+    );
+  }
 }
 
-function MovieVideo() {
-  const { id } = useParams();
-  const { data, error } = useSWR(tmdb.getMeta("videos", id), fetcher);
-
-  if (!data) return null;
-  const results = data.results;
-
-  return (
-    <div className="mt-10">
-      <h2 className="capitalize font-bold text-4xl mb-5 text-center">
-        trailer
-      </h2>
-      {!!results.length &&
-        results
-          .slice(0, 1)
-          .map((item) => (
-            <iframe
-              width="916"
-              height="515"
-              src={`https://www.youtube.com/embed/${item.key}`}
-              title="HTML & CSS - How to Embed a YouTube Video in Your Website"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="text-center m-auto"
-            ></iframe>
-          ))}
-    </div>
-  );
-}
-
-function Similar() {
-  const { id } = useParams();
-  const { data, error } = useSWR(tmdb.getMeta("similar", id), fetcher);
-
-  if (!data) return null;
-  const results = data.results;
-
-  return (
-    <div className="mb-10">
-      <MovieList listMovie={results}></MovieList>
-    </div>
-  );
-}
+MovieMeta.propTypes = {
+  type: PropTypes.string.isRequired,
+};
 
 export default MovieDetail;

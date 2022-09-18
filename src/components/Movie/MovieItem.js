@@ -2,9 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "../button/Button";
 import { tmdb } from "../../API/config";
+import { useNavigate } from "react-router-dom";
 
 const MovieItem = ({ item }) => {
-  const { poster_path } = item;
+  const navigate = useNavigate();
+  const { poster_path, id } = item;
+
   return (
     <div className="rounded-xl  shadow-2xl  relative">
       <div className="relative bg-[#28272a] bg-opacity-90 rounded-lg  z-10 p-3 ">
@@ -20,7 +23,13 @@ const MovieItem = ({ item }) => {
           <span>{new Date(item.release_date).getFullYear()}</span>
           <span>{item.vote_average}</span>
         </p>
-        <Button className={"w-full"}>Watch</Button>
+        <Button
+          className={"w-full"}
+          primary
+          handler={() => navigate(`/detail/${id}`)}
+        >
+          Watch
+        </Button>
       </div>
       <img
         src={tmdb.img500(poster_path)}
