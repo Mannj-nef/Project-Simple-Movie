@@ -2,11 +2,11 @@ import axios from "axios";
 
 export const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-// const API_MOVIE = process.env.REACT_APP_TMDB;
-// const API_KEY = process.env.REACT_APP_KEY;
+const API_MOVIE = process.env.REACT_APP_TMDB;
+const API_KEY = process.env.REACT_APP_KEY;
 
-const API_MOVIE = "https://api.themoviedb.org/3";
-const API_KEY = "a4bf361f5cdff62a8cda329a39cc0303";
+// const API_MOVIE = "https://api.themoviedb.org/3";
+// const API_KEY = "a4bf361f5cdff62a8cda329a39cc0303";
 
 export const tmdb = {
   getMovie: (type, page = 1) =>
